@@ -12,5 +12,4 @@ public class Measurement {
     private String parentId,deviceId;
     private Double measuredValue;
     private String timestamp;
-    private Boolean hasAnomaly;
 }

@@ -31,8 +31,35 @@ public class AnomalyValueToHighTest {
         anomalyConfigList.add(anomalyConfig1);
         anomalyConfigList.add(anomalyConfig2);
 
-        List<Measurement> detectedAnomalies = anomalyDetector.detect(measurementJson, anomalyConfigList);
+       Measurement measurement = anomalyDetector.detect(measurementJson, anomalyConfigList);
 
-        assertThat(detectedAnomalies).size().isEqualTo(1);
+       //if not null, means the measurement has a anomaly
+        assertThat(measurement).isNotNull();
+    }
+
+    @Test
+    public void findNoAnomaly(){
+        AnomalyDetector anomalyDetector = new ValueToHighAnomalyDetector();
+
+        Measurement measurementJson = new Measurement();
+        measurementJson.setMeasuredValue(200D);
+        measurementJson.setParentId("DC1");
+
+        List<AnomalyConfig> anomalyConfigList = new ArrayList<>();
+
+        AnomalyConfig anomalyConfig1 = new AnomalyConfig();
+        anomalyConfig1.setLimit(100D);
+        anomalyConfig1.setParentPattern("D.*1");
+        AnomalyConfig anomalyConfig2 = new AnomalyConfig();
+        anomalyConfig2.setParentPattern("DC2");
+        anomalyConfig2.setLimit(99D);
+
+        anomalyConfigList.add(anomalyConfig1);
+        anomalyConfigList.add(anomalyConfig2);
+
+        Measurement measurement = anomalyDetector.detect(measurementJson, anomalyConfigList);
+
+        //if not null, means the measurement has a anomaly
+        assertThat(measurement).isNotNull();
     }
 }
